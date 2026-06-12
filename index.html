@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sayWhat</title>
+
+  <style>
+    :root {
+      --pink: #f7a8c9;
+      --blue: #8fd3ff;
+      --white: #fff8ff;
+      --lavender: #d8c7ff;
+      --deep: #21172f;
+      --leaf: #8ed8a7;
+      --glow: 0 0 28px rgba(247, 168, 201, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--white);
+      background:
+        radial-gradient(circle at top left, rgba(143, 211, 255, 0.45), transparent 35%),
+        radial-gradient(circle at top right, rgba(247, 168, 201, 0.5), transparent 30%),
+        linear-gradient(180deg, #20152f, #2d2040 45%, #153424);
+      overflow-x: hidden;
+    }
+
+    .stars, .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .stars::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.9) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255,255,255,.5) 1px, transparent 1px);
+      background-size: 80px 80px, 130px 130px;
+      animation: drift 22s linear infinite;
+      opacity: .45;
+    }
+
+    @keyframes drift {
+      from { transform: translateY(0); }
+      to { transform: translateY(80px); }
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: min(960px, 92vw);
+      margin: 0 auto;
+      padding: 42px 0 80px;
+    }
+
+    header {
+      min-height: 82vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 9px 14px;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 999px;
+      background: rgba(255,255,255,.09);
+      backdrop-filter: blur(10px);
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: clamp(3.4rem, 10vw, 7.8rem);
+      line-height: .9;
+      margin: 0;
+      letter-spacing: -0.08em;
+      text-shadow: var(--glow);
+    }
+
+    .trans-text {
+      background: linear-gradient(90deg, var(--blue), var(--white), var(--pink));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      max-width: 680px;
+      margin: 24px auto;
+      color: rgba(255,255,255,.84);
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      border-radius: 999px;
+      padding: 16px 26px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #21172f;
+      background: linear-gradient(90deg, var(--blue), var(--white), var(--pink));
+      box-shadow: var(--glow);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 44px rgba(143, 211, 255, .75);
+    }
+
+    section {
+      margin: 34px 0;
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 28px;
+      background: rgba(255,255,255,.09);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 24px 80px rgba(0,0,0,.28);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: .8s ease;
+    }
+
+    section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .terminal {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: rgba(9, 8, 18, .84);
+      border-color: rgba(143, 211, 255, .35);
+    }
+
+    .line {
+      margin: 12px 0;
+      color: #c9ffe0;
+    }
+
+    .line span {
+      color: var(--pink);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .stat {
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.11);
+      border: 1px solid rgba(255,255,255,.16);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: .85rem;
+      color: rgba(255,255,255,.62);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      margin-bottom: 8px;
+    }
+
+    .stat span {
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+
+    .reveal {
+      text-align: center;
+      padding: 46px 28px;
+    }
+
+    .reveal h2 {
+      font-size: clamp(2.6rem, 8vw, 5.5rem);
+      margin: 0;
+      line-height: .95;
+    }
+
+    .flower-field {
+      font-size: 2rem;
+      line-height: 1.8;
+      letter-spacing: .3rem;
+      animation: breathe 3s ease-in-out infinite;
+      margin: 26px 0;
+    }
+
+    @keyframes breathe {
+      50% { transform: scale(1.05); filter: drop-shadow(0 0 22px rgba(255,255,255,.5)); }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 42px;
+      color: rgba(255,255,255,.7);
+    }
+
+    .mushroom {
+      position: fixed;
+      bottom: 16px;
+      left: 18px;
+      font-size: 3rem;
+      z-index: 2;
+      filter: drop-shadow(0 0 16px rgba(247,168,201,.8));
+      animation: wiggle 4s ease-in-out infinite;
+    }
+
+    @keyframes wiggle {
+      50% { transform: rotate(-4deg) translateY(-5px); }
+    }
+
+    .particle {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--pink);
+      animation: floatUp 2.8s ease-out forwards;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    @keyframes floatUp {
+      to {
+        transform: translateY(-120px) scale(0);
+        opacity: 0;
+      }
+    }
+
+    a {
+      color: var(--blue);
+      font-weight: 800;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars"></div>
+  <div class="particles" id="particles"></div>
+  <div class="mushroom">🍄</div>
+
+  <main class="wrap">
+    <header>
+      <div>
+        <div class="badge">🌙 magical identity patch detected</div>
+        <h1>say<span class="trans-text">What?</span></h1>
+        <p class="subtitle">
+          A tiny forest spell, a suspiciously cute system update, and one very unexpected gender reveal.
+        </p>
+        <button onclick="beginReveal()">Begin the reveal ✨</button>
+      </div>
+    </header>
+
+    <section id="terminal" class="terminal hidden">
+      <div class="line">&gt; Booting AetherOS...</div>
+      <div class="line">&gt; Scanning identity files...</div>
+      <div class="line">&gt; Assigned profile: <span>AMAB</span></div>
+      <div class="line">&gt; Actual profile: <span>Woman</span></div>
+      <div class="line">&gt; Mismatch detected.</div>
+      <div class="line">&gt; Repairing with self-love, courage, estrogen dreams, and cute outfits...</div>
+      <div class="line">&gt; Update complete.</div>
+    </section>
+
+    <section id="character" class="hidden">
+      <h2>Character Sheet Updated</h2>
+      <div class="card-grid">
+        <div class="stat">
+          <strong>Name</strong>
+          <span>Addie</span>
+        </div>
+        <div class="stat">
+          <strong>Class</strong>
+          <span>Forest Tech Witch</span>
+        </div>
+        <div class="stat">
+          <strong>Gender</strong>
+          <span>Woman</span>
+        </div>
+        <div class="stat">
+          <strong>Status</strong>
+          <span>Finally loading the correct save file</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="reveal" class="reveal hidden">
+      <div class="flower-field">
+        🌸 🦋 ✨ 🌙 💙 🤍 💗 🌙 ✨ 🦋 🌸
+      </div>
+      <h2>Hi, I’m <span class="trans-text">Addie</span>.</h2>
+      <p class="subtitle">
+        Assigned male at birth, but becoming the woman I was always meant to find.
+      </p>
+      <p class="subtitle">
+        It took me a while to hear myself clearly. Turns out she was here all along.
+      </p>
+      <button onclick="moreMagic()">More sparkles, obviously</button>
+    </section>
+
+    <footer>
+      made with softness, chaos, courage, and trans-coloured magic
+    </footer>
+  </main>
+
+  <script>
+    const steps = ["terminal", "character", "reveal"];
+
+    function beginReveal() {
+      steps.forEach((id, index) => {
+        setTimeout(() => {
+          const section = document.getElementById(id);
+          section.classList.remove("hidden");
+          setTimeout(() => section.classList.add("show"), 60);
+          section.scrollIntoView({ behavior: "smooth", block: "center" });
+          burst();
+        }, index * 1200);
+      });
+    }
+
+    function burst() {
+      const colors = ["#8fd3ff", "#fff8ff", "#f7a8c9", "#d8c7ff", "#8ed8a7"];
+
+      for (let i = 0; i < 42; i++) {
+        const p = document.createElement("div");
+        p.className = "particle";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = 65 + Math.random() * 25 + "vh";
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.animationDelay = Math.random() * 0.6 + "s";
+        document.body.appendChild(p);
+
+        setTimeout(() => p.remove(), 3200);
+      }
+    }
+
+    function moreMagic() {
+      burst();
+      burst();
+    }
+  </script>
+</body>
+</html>
