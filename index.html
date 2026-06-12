@@ -208,74 +208,174 @@ footer{text-align:center;padding:60px 0;color:rgba(255,255,255,.7)}
 </div>
 
 <script>
-let butterflies=new Set(), mushrooms=0, soundOn=false, audioCtx, hum;
-const memories=[
-"I always wondered what it would feel like.",
-"I thought everyone felt this way. Turns out they did not.",
-"The first moments of gender euphoria felt like sunlight.",
-"I spent so long trying to be okay. Now I want to be real.",
-"Some names feel like home before you know why.",
-"Buying soft things felt surprisingly peaceful."
-];
-const facts=[
-"Forest tech witch is now canon.",
-"Authenticity increased by +100.",
-"Outfit collection potential: infinite.",
-"Yes, the mushroom is clickable.",
-"The referral form felt scary until it felt right.",
-"Correct save file loading..."
+let butterflies = new Set();
+let mushrooms = 0;
+let soundOn = false;
+let audioCtx;
+let hum;
+
+const memories = [
+  "I always wondered what it would feel like.",
+  "I thought everyone felt this way. Turns out they did not.",
+  "The first moments of gender euphoria felt like sunlight.",
+  "I spent so long trying to be okay. Now I want to be real.",
+  "Some names feel like home before you know why.",
+  "Buying soft things felt surprisingly peaceful."
 ];
 
-function updateHud(){document.getElementById("hud").textContent=`🦋 ${butterflies.size}/6 · 🍄 ${mushrooms}/5`}
-function startMagic(){document.body.classList.add("dawn");burst();window.scrollTo({top:innerHeight,behavior:"smooth"})}
-function collectButterfly(i){butterflies.add(i);document.getElementById("memory").textContent=memories[i]||memories[0];updateHud();chime();burst()}
-function collectMushroom(){if(mushrooms<5)mushrooms++;updateHud();chime();burst()}
-function sayWhat(){document.getElementById("fact").textContent=facts[Math.floor(Math.random()*facts.length)];burst();chime()}
-function starMsg(t){document.getElementById("starText").textContent=t;burst();chime()}
-function mirrorReveal(){document.getElementById("mirrorText").innerHTML='Hi <span class="trans">Addie</span>.';document.body.classList.add("dawn");burst();chime()}
-function evolve(){
- name.textContent="Addie"; class.textContent="Forest Tech Witch"; gender.textContent="Woman"; status.textContent="Correct save file loaded";
- document.body.classList.add("dawn");burst();burst();chime()
+const facts = [
+  "Forest tech witch is now canon.",
+  "Authenticity increased by +100.",
+  "Outfit collection potential: infinite.",
+  "Yes, the mushroom is clickable.",
+  "The referral form felt scary until it felt right.",
+  "Correct save file loading..."
+];
+
+function updateHud() {
+  document.getElementById("hud").textContent = `🦋 ${butterflies.size}/6 · 🍄 ${mushrooms}/5`;
 }
-function ending(){
- const complete=butterflies.size===6&&mushrooms>=5;
- ending.textContent=complete
- ?"Achievement Unlocked: Correct Save File 100%. Thanks for walking through the forest with me."
- :"Achievement Partially Unlocked: Correct Save File Loading. There are still butterflies and mushrooms hiding.";
- burst();chime()
+
+function startMagic() {
+  document.body.classList.add("dawn");
+  burst();
+  window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
 }
-function openSecret(){secret.classList.add("open");burst()}
-function closeSecret(){secret.classList.remove("open")}
-function burst(){
- const colors=["#8fd3ff","#fff8ff","#f7a8c9","#d8c7ff","#8ed8a7"];
- for(let i=0;i<46;i++){
-  const p=document.createElement("div");p.className="particle";
-  p.style.left=Math.random()*100+"vw";p.style.top=60+Math.random()*30+"vh";
-  p.style.background=colors[Math.floor(Math.random()*colors.length)];
-  p.style.animationDelay=Math.random()*0.5+"s";document.body.appendChild(p);
-  setTimeout(()=>p.remove(),3200)
- }
+
+function collectButterfly(i) {
+  butterflies.add(i);
+
+  const memoryBox = document.getElementById("memory");
+  const factBox = document.getElementById("fact");
+
+  if (memoryBox) memoryBox.textContent = memories[i] || memories[0];
+  if (factBox && i >= 3) factBox.textContent = memories[i] || memories[0];
+
+  updateHud();
+  chime();
+  burst();
 }
-function toggleSound(){
- if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)()}
- if(!soundOn){
-  hum=audioCtx.createOscillator();const gain=audioCtx.createGain();
-  hum.type="sine";hum.frequency.value=174;gain.gain.value=.025;
-  hum.connect(gain);gain.connect(audioCtx.destination);hum.start();soundOn=true;
- }else{hum.stop();soundOn=false}
+
+function collectMushroom() {
+  if (mushrooms < 5) mushrooms++;
+  updateHud();
+  chime();
+  burst();
 }
-function chime(){
- if(!soundOn||!audioCtx)return;
- const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
- osc.frequency.value=660+Math.random()*220;gain.gain.value=.08;
- osc.connect(gain);gain.connect(audioCtx.destination);osc.start();
- gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.7);
- osc.stop(audioCtx.currentTime+.72)
+
+function sayWhat() {
+  document.getElementById("fact").textContent =
+    facts[Math.floor(Math.random() * facts.length)];
+  burst();
+  chime();
 }
-window.addEventListener("scroll",()=>{
- const y=scrollY;
- document.querySelector(".mountains").style.transform=`translateY(${y*.08}px)`;
- document.querySelector(".trees").style.transform=`translateY(${y*.18}px)`;
+
+function starMsg(text) {
+  document.getElementById("starText").textContent = text;
+  burst();
+  chime();
+}
+
+function mirrorReveal() {
+  document.getElementById("mirrorText").innerHTML =
+    'Hi <span class="trans">Addie</span>.';
+  document.body.classList.add("dawn");
+  burst();
+  chime();
+}
+
+function evolve() {
+  document.getElementById("name").textContent = "Addie";
+  document.getElementById("class").textContent = "Forest Tech Witch";
+  document.getElementById("gender").textContent = "Woman";
+  document.getElementById("status").textContent = "Correct save file loaded";
+
+  document.body.classList.add("dawn");
+  burst();
+  burst();
+  chime();
+}
+
+function ending() {
+  const complete = butterflies.size === 6 && mushrooms >= 5;
+
+  document.getElementById("ending").textContent = complete
+    ? "Achievement Unlocked: Correct Save File 100%. Thanks for walking through the forest with me."
+    : "Achievement Partially Unlocked: Correct Save File Loading. There are still butterflies and mushrooms hiding.";
+
+  burst();
+  chime();
+}
+
+function openSecret() {
+  document.getElementById("secret").classList.add("open");
+  burst();
+}
+
+function closeSecret() {
+  document.getElementById("secret").classList.remove("open");
+}
+
+function burst() {
+  const colors = ["#8fd3ff", "#fff8ff", "#f7a8c9", "#d8c7ff", "#8ed8a7"];
+
+  for (let i = 0; i < 46; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.top = 60 + Math.random() * 30 + "vh";
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDelay = Math.random() * 0.5 + "s";
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 3200);
+  }
+}
+
+function toggleSound() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  if (!soundOn) {
+    hum = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    hum.type = "sine";
+    hum.frequency.value = 174;
+    gain.gain.value = 0.025;
+
+    hum.connect(gain);
+    gain.connect(audioCtx.destination);
+    hum.start();
+
+    soundOn = true;
+  } else {
+    hum.stop();
+    soundOn = false;
+  }
+}
+
+function chime() {
+  if (!soundOn || !audioCtx) return;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.frequency.value = 660 + Math.random() * 220;
+  gain.gain.value = 0.08;
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.7);
+  osc.stop(audioCtx.currentTime + 0.72);
+}
+
+window.addEventListener("scroll", () => {
+  const y = scrollY;
+  document.querySelector(".mountains").style.transform = `translateY(${y * 0.08}px)`;
+  document.querySelector(".trees").style.transform = `translateY(${y * 0.18}px)`;
 });
 </script>
 </body>
