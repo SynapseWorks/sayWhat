@@ -7,40 +7,41 @@
 <style>
 :root{
   --pink:#f7a8c9;--blue:#8fd3ff;--white:#fff8ff;--lav:#d8c7ff;
-  --deep:#12091f;--green:#8ed8a7;--gold:#ffe7a3;
-  --glass:rgba(255,255,255,.11);--line:rgba(255,255,255,.22);
+  --green:#8ed8a7;--gold:#ffe7a3;--deep:#12091f;
+  --glass:rgba(255,255,255,.12);--line:rgba(255,255,255,.22);
   --glow:0 0 34px rgba(247,168,201,.75);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
   margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  color:var(--white);background:linear-gradient(#10091d,#261b3c 50%,#153424);
-  overflow-x:hidden;transition:background 1.2s ease;
+  color:var(--white);background:linear-gradient(#090512,#261b3c 48%,#153424);
+  overflow-x:hidden;transition:background 1.5s ease;
 }
-body.dawn{
-  background:linear-gradient(#6d559f,#e091ba 56%,#5caf78);
-}
+body.dawn{background:linear-gradient(#7661b8,#f1a6c8 54%,#77c98c)}
 .stars,.layer{position:fixed;inset:0;pointer-events:none}
-.stars{z-index:0;background-image:radial-gradient(circle,rgba(255,255,255,.85) 1px,transparent 1px);background-size:90px 90px;opacity:.42;animation:drift 34s linear infinite}
+.stars{z-index:0;background-image:radial-gradient(circle,rgba(255,255,255,.9) 1px,transparent 1px);background-size:90px 90px;opacity:.42;animation:drift 34s linear infinite}
 @keyframes drift{to{transform:translateY(90px)}}
 .layer{z-index:1}
-.mountains{background:linear-gradient(transparent 60%,rgba(60,45,95,.55) 61%,transparent 80%)}
-.trees{background:
-  radial-gradient(ellipse at 10% 100%,rgba(20,60,38,.7) 0 18%,transparent 19%),
-  radial-gradient(ellipse at 90% 100%,rgba(20,70,42,.7) 0 22%,transparent 23%);
+.mountains{background:linear-gradient(transparent 58%,rgba(72,55,110,.55) 60%,transparent 82%)}
+.trees{background:radial-gradient(ellipse at 10% 100%,rgba(20,60,38,.75) 0 18%,transparent 19%),radial-gradient(ellipse at 90% 100%,rgba(20,70,42,.75) 0 22%,transparent 23%)}
+.path{
+  position:fixed;left:50%;top:0;width:240px;height:100%;z-index:1;pointer-events:none;
+  transform:translateX(-50%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);
+  clip-path:polygon(40% 0,60% 0,75% 100%,25% 100%);
 }
-main{position:relative;z-index:2;width:min(1000px,92vw);margin:auto}
-section{min-height:95vh;display:grid;place-items:center;padding:70px 0}
+main{position:relative;z-index:2;width:min(1040px,92vw);margin:auto}
+section{min-height:96vh;display:grid;place-items:center;padding:70px 0}
 .card{
   width:100%;padding:34px;border:1px solid var(--line);border-radius:34px;
-  background:var(--glass);backdrop-filter:blur(16px);box-shadow:0 25px 90px rgba(0,0,0,.3);
+  background:var(--glass);backdrop-filter:blur(16px);box-shadow:0 25px 90px rgba(0,0,0,.32);
   text-align:center;
 }
 h1,h2{line-height:.95;margin:0 0 22px}
 h1{font-size:clamp(4rem,12vw,9rem);letter-spacing:-.08em;text-shadow:var(--glow)}
-h2{font-size:clamp(2.5rem,7vw,5.4rem)}
-p{font-size:clamp(1.08rem,2.4vw,1.42rem);color:rgba(255,255,255,.86);max-width:760px;margin:18px auto}
+h2{font-size:clamp(2.4rem,7vw,5.3rem)}
+p{font-size:clamp(1.08rem,2.4vw,1.42rem);color:rgba(255,255,255,.88);max-width:760px;margin:18px auto}
 .trans{background:linear-gradient(90deg,var(--blue),var(--white),var(--pink));-webkit-background-clip:text;color:transparent}
 button{
   border:0;cursor:pointer;border-radius:999px;padding:15px 24px;margin:8px;
@@ -49,12 +50,23 @@ button{
   box-shadow:var(--glow);transition:.2s ease;
 }
 button:hover{transform:translateY(-3px) scale(1.03)}
-.hud{
-  position:fixed;top:14px;right:14px;z-index:10;padding:10px 14px;border-radius:999px;
-  background:rgba(0,0,0,.35);border:1px solid var(--line);backdrop-filter:blur(12px);
-  font-size:.9rem
+.hud,.orb{
+  position:fixed;z-index:15;border:1px solid var(--line);background:rgba(0,0,0,.35);
+  backdrop-filter:blur(12px)
 }
-.collectible{font-size:2.4rem;cursor:pointer;display:inline-block;margin:12px;filter:drop-shadow(0 0 14px rgba(143,211,255,.8));animation:flutter 2s ease-in-out infinite}
+.hud{top:14px;right:14px;padding:10px 14px;border-radius:999px;font-size:.9rem}
+.orb{
+  right:18px;bottom:18px;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;
+  box-shadow:0 0 35px rgba(143,211,255,.65);cursor:pointer;font-size:2rem;
+}
+.speech{
+  position:fixed;right:20px;bottom:105px;z-index:16;max-width:310px;padding:16px;border-radius:20px;
+  background:rgba(5,5,14,.86);border:1px solid var(--line);display:none
+}
+.collectible,.spirit,.journal{
+  font-size:2.4rem;cursor:pointer;display:inline-block;margin:12px;
+  filter:drop-shadow(0 0 14px rgba(143,211,255,.8));animation:flutter 2s ease-in-out infinite
+}
 @keyframes flutter{50%{transform:translateY(-8px) rotate(8deg)}}
 .memory{min-height:56px;font-size:1.25rem;font-weight:800}
 .terminal{text-align:left;background:rgba(5,5,14,.86);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
@@ -62,320 +74,257 @@ button:hover{transform:translateY(-3px) scale(1.03)}
 .sheet{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:24px}
 .stat{padding:20px;border-radius:22px;background:rgba(255,255,255,.12);border:1px solid var(--line)}
 .stat small{display:block;text-transform:uppercase;letter-spacing:.12em;opacity:.65}.stat strong{font-size:1.35rem}
-.mirror{
-  width:min(520px,90vw);height:620px;margin:auto;border-radius:48% 48% 42% 42%;
-  border:8px solid rgba(255,255,255,.35);
-  background:radial-gradient(circle at 50% 30%,rgba(255,255,255,.6),rgba(143,211,255,.22),rgba(247,168,201,.25));
-  display:grid;place-items:center;box-shadow:0 0 70px rgba(143,211,255,.55),inset 0 0 70px rgba(255,255,255,.25);
+.pond{
+  width:min(700px,92vw);height:360px;margin:20px auto;border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(255,255,255,.55),rgba(143,211,255,.28),rgba(247,168,201,.18),rgba(20,40,70,.6));
+  display:grid;place-items:center;box-shadow:0 0 80px rgba(143,211,255,.55),inset 0 0 70px rgba(255,255,255,.22);
+  cursor:pointer;position:relative;overflow:hidden
 }
-.mirror h3{font-size:clamp(2rem,7vw,4rem);text-shadow:0 0 25px white}
-.constellation{position:relative;height:520px}
+.pond:after{content:"";position:absolute;inset:20%;border:2px solid rgba(255,255,255,.35);border-radius:50%;animation:ripple 2.8s infinite}
+@keyframes ripple{to{transform:scale(2.4);opacity:0}}
+.pond h3{font-size:clamp(2rem,6vw,4rem);z-index:2;text-shadow:0 0 25px white}
+.constellation{position:relative;height:560px}
 .star{
-  position:absolute;width:20px;height:20px;border-radius:50%;background:var(--gold);
-  box-shadow:0 0 22px var(--gold);cursor:pointer;
+  position:absolute;width:22px;height:22px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 24px var(--gold);cursor:pointer;animation:pulse 2.4s infinite
 }
-.star::after{content:attr(data-label);position:absolute;top:24px;left:-50px;width:120px;font-size:.8rem;font-weight:800}
-.lineSvg{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
-.secret{
-  position:fixed;inset:0;z-index:30;display:none;place-items:center;background:rgba(10,5,18,.88);backdrop-filter:blur(14px);padding:20px;
+@keyframes pulse{50%{transform:scale(1.35)}}
+.star::after{content:attr(data-label);position:absolute;top:27px;left:-55px;width:130px;font-size:.82rem;font-weight:900}
+.lineSvg{position:absolute;inset:0;width:100%;height:100%;opacity:.65}
+.secret,.modal{
+  position:fixed;inset:0;z-index:40;display:none;place-items:center;background:rgba(10,5,18,.88);backdrop-filter:blur(14px);padding:20px
 }
-.secret.open{display:grid}.secret .card{max-width:760px}
+.secret.open,.modal.open{display:grid}.secret .card,.modal .card{max-width:780px}
 .mushroom{
-  position:fixed;left:18px;bottom:14px;font-size:3.2rem;z-index:12;cursor:pointer;
+  position:fixed;left:18px;bottom:14px;font-size:3.2rem;z-index:16;cursor:pointer;
   filter:drop-shadow(0 0 18px rgba(247,168,201,.9));animation:wiggle 4s ease-in-out infinite
 }
+.pixel-shroom{position:fixed;top:47%;left:3px;font-size:1rem;z-index:20;cursor:pointer;opacity:.35}
 @keyframes wiggle{50%{transform:rotate(-5deg) translateY(-6px)}}
-.particle{position:fixed;width:10px;height:10px;border-radius:50%;z-index:40;pointer-events:none;animation:floatUp 3s ease-out forwards}
+.sunrise{
+  position:fixed;left:50%;bottom:-220px;transform:translateX(-50%);
+  width:430px;height:430px;border-radius:50%;background:radial-gradient(circle,var(--gold),var(--pink),transparent 70%);
+  z-index:1;opacity:0;transition:2s ease;pointer-events:none
+}
+body.sunrise .sunrise{bottom:10%;opacity:.85}
+.particle{position:fixed;width:10px;height:10px;border-radius:50%;z-index:50;pointer-events:none;animation:floatUp 3s ease-out forwards}
 @keyframes floatUp{to{transform:translateY(-140px) scale(0);opacity:0}}
 footer{text-align:center;padding:60px 0;color:rgba(255,255,255,.7)}
 </style>
 </head>
 <body>
-<div class="stars"></div><div class="layer mountains"></div><div class="layer trees"></div>
-<div class="hud" id="hud">🦋 0/6 · 🍄 0/5</div>
+<div class="stars"></div><div class="layer mountains"></div><div class="layer trees"></div><div class="path"></div><div class="sunrise"></div>
+<div class="hud" id="hud">🦋 0/6 · 🍄 0/5 · 📖 0/4</div>
 <div class="mushroom" onclick="openSecret()">🍄</div>
+<div class="pixel-shroom" onclick="patchNotes()">🍄</div>
+<div class="orb" onclick="aetherTalk()">💠</div>
+<div class="speech" id="speech">[AetherOS] Hello. I am awake.</div>
 
 <main>
-<section>
-  <div class="card">
-    <h1>say<span class="trans">What?</span></h1>
-    <p>A tiny forest spell, a suspicious system update, and one very unexpected gender reveal.</p>
-    <button onclick="startMagic()">Begin the reveal ✨</button>
-    <button onclick="toggleSound()">🔊 Enable Forest Sounds</button>
-  </div>
-</section>
+<section><div class="card">
+  <h1>say<span class="trans">What?</span></h1>
+  <p>A walk through an enchanted forest, a suspicious system update, and one very unexpected gender reveal.</p>
+  <button onclick="startMagic()">Enter the forest ✨</button>
+  <button onclick="toggleSound()">🔊 Enable Forest Sounds</button>
+</div></section>
 
-<section>
-  <div class="card">
-    <h2>The Forest</h2>
-    <p>Something felt different. I could not explain it, so for a long time I tried not to hear it.</p>
-    <p>But the forest kept whispering.</p>
-    <span class="collectible" onclick="collectButterfly(0)">🦋</span>
-    <span class="collectible" onclick="collectButterfly(1)">🦋</span>
-    <span class="collectible" onclick="collectButterfly(2)">🦋</span>
-    <p class="memory" id="memory">Click the butterflies.</p>
-  </div>
-</section>
+<section><div class="card">
+  <h2>Forest Entrance</h2>
+  <p>Something felt different. I could not explain it, so for a long time I tried not to hear it.</p>
+  <p>But the forest kept whispering.</p>
+  <span class="collectible" onclick="collectButterfly(0)">🦋</span>
+  <span class="collectible" onclick="collectButterfly(1)">🦋</span>
+  <span class="journal" onclick="openJournal(0)">📖</span>
+  <p class="memory" id="memory">Click butterflies, journals, spirits, and suspicious mushrooms.</p>
+</div></section>
 
-<section>
-  <div class="card terminal">
-    <div>[AetherOS] Hello.</div>
-    <div>[AetherOS] I have been monitoring this situation.</div>
-    <div>&gt; Assigned profile: <span>AMAB</span></div>
-    <div>&gt; Actual profile: <span>Woman</span></div>
-    <div>[AetherOS] You seem happier when you stop pretending.</div>
-    <div>[AetherOS] Recommendation: continue being yourself.</div>
-  </div>
-</section>
+<section><div class="card">
+  <h2>Forest Spirits</h2>
+  <p>The locals have opinions.</p>
+  <span class="spirit" onclick="spirit('The forest noticed before you did.')">🦊</span>
+  <span class="spirit" onclick="spirit('You seem happier.')">🐸</span>
+  <span class="spirit" onclick="spirit('Cute outfit. Finally.')">🐇</span>
+  <span class="journal" onclick="openJournal(1)">📖</span>
+  <p class="memory" id="spiritText">Click a spirit.</p>
+</div></section>
 
-<section>
-  <div class="card">
-    <h2>Character Sheet</h2>
-    <div class="sheet">
-      <div class="stat"><small>Name</small><strong id="name">Adam</strong></div>
-      <div class="stat"><small>Class</small><strong id="class">Human?</strong></div>
-      <div class="stat"><small>Gender</small><strong id="gender">???</strong></div>
-      <div class="stat"><small>Status</small><strong id="status">Questioning</strong></div>
-    </div>
-    <button onclick="evolve()">Run evolution sequence</button>
-  </div>
-</section>
+<section><div class="card terminal">
+  <div>[AetherOS] Hello Addie.</div>
+  <div>[AetherOS] I have been monitoring this situation.</div>
+  <div>&gt; Assigned profile: <span>AMAB</span></div>
+  <div>&gt; Actual profile: <span>Woman</span></div>
+  <div>[AetherOS] Confidence levels increasing.</div>
+  <div>[AetherOS] Recommendation: continue being yourself.</div>
+</div></section>
 
-<section>
-  <div class="card">
-    <h2>The Mirror</h2>
-    <div class="mirror" onclick="mirrorReveal()"><h3 id="mirrorText">Identity Unknown</h3></div>
-    <p>Click the mirror.</p>
+<section><div class="card">
+  <h2>Character Sheet</h2>
+  <div class="sheet">
+    <div class="stat"><small>Name</small><strong id="name">Adam</strong></div>
+    <div class="stat"><small>Class</small><strong id="className">Human?</strong></div>
+    <div class="stat"><small>Gender</small><strong id="gender">???</strong></div>
+    <div class="stat"><small>Status</small><strong id="status">Questioning</strong></div>
   </div>
-</section>
+  <button onclick="evolve()">Run evolution sequence</button>
+</div></section>
 
-<section>
-  <div class="card">
-    <h2>Constellation Timeline</h2>
-    <p>Every star is part of the map.</p>
-    <div class="constellation">
-      <svg class="lineSvg" viewBox="0 0 1000 520"><polyline points="100,380 230,250 380,330 520,170 680,260 840,120" fill="none" stroke="white" stroke-width="3"/></svg>
-      <div class="star" style="left:10%;top:72%" data-label="Questioning" onclick="starMsg('I started wondering why the old answers never fit.')"></div>
-      <div class="star" style="left:23%;top:48%" data-label="Research" onclick="starMsg('I learned about HRT, transition, and possibility.')"></div>
-      <div class="star" style="left:38%;top:63%" data-label="Euphoria" onclick="starMsg('Some things felt like sunlight.')"></div>
-      <div class="star" style="left:52%;top:32%" data-label="Addie" onclick="starMsg('Some names feel like home.')"></div>
-      <div class="star" style="left:68%;top:50%" data-label="Referral" onclick="starMsg('I started choosing myself.')"></div>
-      <div class="star" style="left:84%;top:22%" data-label="Future" onclick="starMsg('She is doing great.')"></div>
-    </div>
-    <p class="memory" id="starText">Click a star.</p>
-  </div>
-</section>
+<section><div class="card">
+  <h2>Mirror Pond</h2>
+  <div class="pond" onclick="mirrorReveal()"><h3 id="mirrorText">Identity Unknown</h3></div>
+  <p>Click the water. Let it ripple.</p>
+  <span class="collectible" onclick="collectButterfly(2)">🦋</span>
+  <span class="journal" onclick="openJournal(2)">📖</span>
+</div></section>
 
-<section>
-  <div class="card">
-    <h2>Hi, I’m <span class="trans">Addie</span>.</h2>
-    <p>Assigned male at birth, but becoming the woman I was always meant to find.</p>
-    <p>It took me a while to hear myself clearly. Turns out she was here all along.</p>
-    <button onclick="sayWhat()">Say what?</button>
-    <p class="memory" id="fact">Click for tiny reveal lore.</p>
-    <span class="collectible" onclick="collectButterfly(3)">🦋</span>
-    <span class="collectible" onclick="collectButterfly(4)">🦋</span>
-    <span class="collectible" onclick="collectButterfly(5)">🦋</span>
+<section><div class="card">
+  <h2>Constellation Clearing</h2>
+  <p>The stars connect into a name.</p>
+  <div class="constellation">
+    <svg class="lineSvg" viewBox="0 0 1000 560">
+      <polyline points="90,410 160,160 230,410 320,410 390,160 460,410 570,410 570,160 700,410 780,160 870,410" fill="none" stroke="white" stroke-width="3"/>
+    </svg>
+    <div class="star" style="left:9%;top:73%" data-label="A" onclick="starMsg('I started wondering why the old answers never fit.')"></div>
+    <div class="star" style="left:16%;top:28%" data-label="D" onclick="starMsg('I learned about transition, HRT, and possibility.')"></div>
+    <div class="star" style="left:23%;top:73%" data-label="D" onclick="starMsg('Some things felt like sunlight.')"></div>
+    <div class="star" style="left:39%;top:28%" data-label="I" onclick="starMsg('Some names feel like home.')"></div>
+    <div class="star" style="left:57%;top:73%" data-label="E" onclick="starMsg('I started choosing myself.')"></div>
   </div>
-</section>
+  <p class="memory" id="starText">Click a star.</p>
+</div></section>
 
-<section>
-  <div class="card">
-    <h2>The Future</h2>
-    <p>I am excited for softness, courage, fashion, community, healing, magical technology, forest walks, and becoming more myself every day.</p>
-    <p>This is not the end of the story. This is the correct save file finally loading.</p>
-    <button onclick="ending()">Unlock Ending</button>
-    <p class="memory" id="ending">Find things. Click things. Be nosy.</p>
-  </div>
-</section>
+<section><div class="card">
+  <h2>Hi, I’m <span class="trans">Addie</span>.</h2>
+  <p>Assigned male at birth, but becoming the woman I was always meant to find.</p>
+  <p>It took me a while to hear myself clearly. Turns out she was here all along.</p>
+  <button onclick="sayWhat()">Say what?</button>
+  <p class="memory" id="fact">Click for tiny reveal lore.</p>
+  <span class="collectible" onclick="collectButterfly(3)">🦋</span>
+  <span class="collectible" onclick="collectButterfly(4)">🦋</span>
+  <span class="collectible" onclick="collectButterfly(5)">🦋</span>
+  <span class="journal" onclick="openJournal(3)">📖</span>
+</div></section>
+
+<section><div class="card">
+  <h2>Dawn Meadow</h2>
+  <p>This is not the end of the story. This is the correct save file finally loading.</p>
+  <button onclick="ending()">Unlock Ending</button>
+  <p class="memory" id="endingText">Find things. Click things. Be nosy.</p>
+</div></section>
 
 <footer>made with chaos, courage, mushrooms, and trans-coloured magic 💙🤍💗</footer>
 </main>
 
-<div class="secret" id="secret">
-  <div class="card terminal">
-    <div>&gt; Secret Mushroom Network unlocked.</div>
-    <div>&gt; Node 1: scared</div>
-    <div>&gt; Node 2: curious</div>
-    <div>&gt; Node 3: hopeful</div>
-    <div>&gt; Node 4: choosing myself</div>
-    <div>&gt; Node 5: thriving</div>
-    <br>
-    <div>&gt; Note: She's doing great.</div>
-    <button onclick="collectMushroom()">connect mushroom node 🍄</button>
-    <button onclick="closeSecret()">close log</button>
-  </div>
-</div>
+<div class="secret" id="secret"><div class="card terminal">
+  <div>&gt; Secret Mushroom Network unlocked.</div>
+  <div>&gt; Node 1: scared</div><div>&gt; Node 2: curious</div><div>&gt; Node 3: hopeful</div>
+  <div>&gt; Node 4: choosing myself</div><div>&gt; Node 5: thriving</div>
+  <br><div>&gt; Note: She's doing great.</div>
+  <button onclick="collectMushroom()">connect mushroom node 🍄</button>
+  <button onclick="closeSecret()">close log</button>
+</div></div>
+
+<div class="modal" id="modal"><div class="card terminal">
+  <div id="modalText"></div>
+  <button onclick="closeModal()">close</button>
+</div></div>
 
 <script>
-let butterflies = new Set();
-let mushrooms = 0;
-let soundOn = false;
-let audioCtx;
-let hum;
-
-const memories = [
-  "I always wondered what it would feel like.",
-  "I thought everyone felt this way. Turns out they did not.",
-  "The first moments of gender euphoria felt like sunlight.",
-  "I spent so long trying to be okay. Now I want to be real.",
-  "Some names feel like home before you know why.",
-  "Buying soft things felt surprisingly peaceful."
+let butterflies=new Set(), journals=new Set(), mushrooms=0, soundOn=false, audioCtx, hum, mirrorClicks=0;
+const memories=[
+"I always wondered what it would feel like.",
+"I thought everyone felt this way. Turns out they did not.",
+"The first moments of gender euphoria felt like sunlight.",
+"I spent so long trying to be okay. Now I want to be real.",
+"Some names feel like home before you know why.",
+"Buying soft things felt surprisingly peaceful."
+];
+const journalPages=[
+"Page 1: I spent years trying to figure out why something felt missing.",
+"Page 2: The answer was not becoming someone else. It was finally allowing myself to be me.",
+"Page 3: The mirror did not change first. My courage did.",
+"Page 4: Future note: she is doing great."
+];
+const facts=[
+"Forest tech witch is now canon.",
+"Authenticity increased by +100.",
+"Outfit collection potential: infinite.",
+"Yes, the tiny side mushroom is clickable.",
+"The referral form felt scary until it felt right.",
+"Correct save file loading..."
+];
+const aether=[
+"[AetherOS] Hello. I am awake.",
+"[AetherOS] Confidence levels increasing.",
+"[AetherOS] This appears to be the correct timeline.",
+"[AetherOS] I am happy for you.",
+"[AetherOS] Patch successful: Addie installed."
 ];
 
-const facts = [
-  "Forest tech witch is now canon.",
-  "Authenticity increased by +100.",
-  "Outfit collection potential: infinite.",
-  "Yes, the mushroom is clickable.",
-  "The referral form felt scary until it felt right.",
-  "Correct save file loading..."
-];
-
-function updateHud() {
-  document.getElementById("hud").textContent = `🦋 ${butterflies.size}/6 · 🍄 ${mushrooms}/5`;
+function updateHud(){hud.textContent=`🦋 ${butterflies.size}/6 · 🍄 ${mushrooms}/5 · 📖 ${journals.size}/4`}
+function startMagic(){document.body.classList.add("dawn");burst();window.scrollTo({top:innerHeight,behavior:"smooth"})}
+function collectButterfly(i){butterflies.add(i);memory.textContent=memories[i]||memories[0];updateHud();chime();burst()}
+function collectMushroom(){if(mushrooms<5)mushrooms++;updateHud();chime();burst()}
+function openSecret(){secret.classList.add("open");burst()}
+function closeSecret(){secret.classList.remove("open")}
+function openJournal(i){journals.add(i);modalText.textContent=journalPages[i];modal.classList.add("open");updateHud();burst();chime()}
+function closeModal(){modal.classList.remove("open")}
+function spirit(t){spiritText.textContent=t;burst();chime()}
+function sayWhat(){fact.textContent=facts[Math.floor(Math.random()*facts.length)];burst();chime()}
+function starMsg(t){starText.textContent=t;burst();chime()}
+function aetherTalk(){speech.style.display="block";speech.textContent=aether[Math.floor(Math.random()*aether.length)];setTimeout(()=>speech.style.display="none",4000);chime()}
+function mirrorReveal(){
+  mirrorClicks++;
+  mirrorText.innerHTML=mirrorClicks===1?"Identity Found":mirrorClicks===2?'Hi <span class="trans">Addie</span>.':"I've been waiting.";
+  document.body.classList.add("dawn");burst();chime()
 }
-
-function startMagic() {
-  document.body.classList.add("dawn");
-  burst();
-  window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+function evolve(){
+  document.getElementById("name").textContent="Addie";
+  document.getElementById("className").textContent="Forest Tech Witch";
+  gender.textContent="Woman";status.textContent="Correct save file loaded";
+  document.body.classList.add("dawn");burst();burst();chime();aetherTalk()
 }
-
-function collectButterfly(i) {
-  butterflies.add(i);
-
-  const memoryBox = document.getElementById("memory");
-  const factBox = document.getElementById("fact");
-
-  if (memoryBox) memoryBox.textContent = memories[i] || memories[0];
-  if (factBox && i >= 3) factBox.textContent = memories[i] || memories[0];
-
-  updateHud();
-  chime();
-  burst();
+function ending(){
+  const complete=butterflies.size===6&&mushrooms>=5&&journals.size===4;
+  document.body.classList.add("dawn","sunrise");
+  endingText.textContent=complete
+    ?"Achievement Unlocked: Correct Save File 100%. Thanks for walking through the forest with me. I'm Addie. Nice to meet you."
+    :"Achievement Partially Unlocked: Correct Save File Loading. There are still butterflies, mushrooms, or journal pages hiding.";
+  burst();burst();chime()
 }
-
-function collectMushroom() {
-  if (mushrooms < 5) mushrooms++;
-  updateHud();
-  chime();
-  burst();
+function patchNotes(){
+  modalText.innerHTML=`Developer Console<br><br>Version 1.0<br><br>Patch Notes:<br>- Fixed: pretending to be someone else<br>- Added: Addie<br>- Buffed: courage<br>- Unlocked: cute outfit tree`;
+  modal.classList.add("open");burst();chime()
 }
-
-function sayWhat() {
-  document.getElementById("fact").textContent =
-    facts[Math.floor(Math.random() * facts.length)];
-  burst();
-  chime();
-}
-
-function starMsg(text) {
-  document.getElementById("starText").textContent = text;
-  burst();
-  chime();
-}
-
-function mirrorReveal() {
-  document.getElementById("mirrorText").innerHTML =
-    'Hi <span class="trans">Addie</span>.';
-  document.body.classList.add("dawn");
-  burst();
-  chime();
-}
-
-function evolve() {
-  document.getElementById("name").textContent = "Addie";
-  document.getElementById("class").textContent = "Forest Tech Witch";
-  document.getElementById("gender").textContent = "Woman";
-  document.getElementById("status").textContent = "Correct save file loaded";
-
-  document.body.classList.add("dawn");
-  burst();
-  burst();
-  chime();
-}
-
-function ending() {
-  const complete = butterflies.size === 6 && mushrooms >= 5;
-
-  document.getElementById("ending").textContent = complete
-    ? "Achievement Unlocked: Correct Save File 100%. Thanks for walking through the forest with me."
-    : "Achievement Partially Unlocked: Correct Save File Loading. There are still butterflies and mushrooms hiding.";
-
-  burst();
-  chime();
-}
-
-function openSecret() {
-  document.getElementById("secret").classList.add("open");
-  burst();
-}
-
-function closeSecret() {
-  document.getElementById("secret").classList.remove("open");
-}
-
-function burst() {
-  const colors = ["#8fd3ff", "#fff8ff", "#f7a8c9", "#d8c7ff", "#8ed8a7"];
-
-  for (let i = 0; i < 46; i++) {
-    const p = document.createElement("div");
-    p.className = "particle";
-    p.style.left = Math.random() * 100 + "vw";
-    p.style.top = 60 + Math.random() * 30 + "vh";
-    p.style.background = colors[Math.floor(Math.random() * colors.length)];
-    p.style.animationDelay = Math.random() * 0.5 + "s";
-    document.body.appendChild(p);
-    setTimeout(() => p.remove(), 3200);
+function burst(){
+  const colors=["#8fd3ff","#fff8ff","#f7a8c9","#d8c7ff","#8ed8a7"];
+  for(let i=0;i<46;i++){
+    const p=document.createElement("div");p.className="particle";
+    p.style.left=Math.random()*100+"vw";p.style.top=60+Math.random()*30+"vh";
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDelay=Math.random()*0.5+"s";document.body.appendChild(p);
+    setTimeout(()=>p.remove(),3200)
   }
 }
-
-function toggleSound() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-
-  if (!soundOn) {
-    hum = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-
-    hum.type = "sine";
-    hum.frequency.value = 174;
-    gain.gain.value = 0.025;
-
-    hum.connect(gain);
-    gain.connect(audioCtx.destination);
-    hum.start();
-
-    soundOn = true;
-  } else {
-    hum.stop();
-    soundOn = false;
-  }
+function toggleSound(){
+  if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  if(!soundOn){
+    hum=audioCtx.createOscillator();const gain=audioCtx.createGain();
+    hum.type="sine";hum.frequency.value=174;gain.gain.value=.025;
+    hum.connect(gain);gain.connect(audioCtx.destination);hum.start();soundOn=true
+  }else{hum.stop();soundOn=false}
 }
-
-function chime() {
-  if (!soundOn || !audioCtx) return;
-
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-
-  osc.frequency.value = 660 + Math.random() * 220;
-  gain.gain.value = 0.08;
-
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  osc.start();
-  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.7);
-  osc.stop(audioCtx.currentTime + 0.72);
+function chime(){
+  if(!soundOn||!audioCtx)return;
+  const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+  osc.frequency.value=660+Math.random()*220;gain.gain.value=.08;
+  osc.connect(gain);gain.connect(audioCtx.destination);osc.start();
+  gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.7);
+  osc.stop(audioCtx.currentTime+.72)
 }
-
-window.addEventListener("scroll", () => {
-  const y = scrollY;
-  document.querySelector(".mountains").style.transform = `translateY(${y * 0.08}px)`;
-  document.querySelector(".trees").style.transform = `translateY(${y * 0.18}px)`;
+window.addEventListener("scroll",()=>{
+  const y=scrollY;
+  document.querySelector(".mountains").style.transform=`translateY(${y*.08}px)`;
+  document.querySelector(".trees").style.transform=`translateY(${y*.18}px)`;
 });
 </script>
 </body>
